@@ -1,4 +1,5 @@
 import { table } from "console";
+import { AppError } from "@/utils/AppError.js";
 import { Request, Response, NextFunction } from "express";
 import { knex } from "@/database/knex.js";
 
@@ -12,6 +13,15 @@ class TablesSessionsController {
       });
 
       const { table_id } = bodySchema.parse(request.body);
+
+      const session = await knex<TablesSessionsRepository>("tables_sessions")
+        .where({ table_id })
+        .orderBy("opened_at", "desc")
+        .first();
+
+      if (session && !session.closed_at) {
+        throw new AppError("This table is already open.", 400);
+      }
 
       await knex<TablesSessionsRepository>("tables_sessions").insert({
         table_id,
