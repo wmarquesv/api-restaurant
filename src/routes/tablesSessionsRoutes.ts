@@ -2,10 +2,11 @@ import Router from "express";
 
 import { TablesSessionsController } from "../controllers/tablesSessionsController.js";
 
-const tablesSessionsRouter = Router();
+const tablesSessionsRoutes = Router();
 const tablesSessionsController = new TablesSessionsController();
 
-tablesSessionsRouter.get("/", tablesSessionsController.index);
-tablesSessionsRouter.post("/", tablesSessionsController.create);
+tablesSessionsRoutes.get("/", tablesSessionsController.index);
+tablesSessionsRoutes.post("/", tablesSessionsController.create);
+tablesSessionsRoutes.patch("/:id", tablesSessionsController.update);
 
-export { tablesSessionsRouter };
+export { tablesSessionsRoutes };
